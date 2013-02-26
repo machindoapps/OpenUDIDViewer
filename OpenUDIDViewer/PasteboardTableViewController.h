@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  PasteboardTableViewController.h
 //  OpenUDIDViewer
 //
 //  Created by David Haynes on 26/02/2013.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface PasteboardTableViewController : UITableViewController
 
 @end

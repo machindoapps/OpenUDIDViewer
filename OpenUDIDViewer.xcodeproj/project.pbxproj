@@ -18,7 +18,7 @@
 		B331651816DCD515000F67BA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B331651716DCD515000F67BA /* Default-568h@2x.png */; };
 		B331651B16DCD515000F67BA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B331651916DCD515000F67BA /* MainStoryboard_iPhone.storyboard */; };
 		B331651E16DCD515000F67BA /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B331651C16DCD515000F67BA /* MainStoryboard_iPad.storyboard */; };
-		B331652116DCD515000F67BA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B331652016DCD515000F67BA /* ViewController.m */; };
+		B331652916DCD628000F67BA /* PasteboardTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B331652816DCD628000F67BA /* PasteboardTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,8 +37,8 @@
 		B331651716DCD515000F67BA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B331651A16DCD515000F67BA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		B331651D16DCD515000F67BA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		B331651F16DCD515000F67BA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		B331652016DCD515000F67BA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B331652716DCD628000F67BA /* PasteboardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasteboardTableViewController.h; sourceTree = "<group>"; };
+		B331652816DCD628000F67BA /* PasteboardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasteboardTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,10 +87,10 @@
 			children = (
 				B331651016DCD515000F67BA /* AppDelegate.h */,
 				B331651116DCD515000F67BA /* AppDelegate.m */,
+				B331652716DCD628000F67BA /* PasteboardTableViewController.h */,
+				B331652816DCD628000F67BA /* PasteboardTableViewController.m */,
 				B331651916DCD515000F67BA /* MainStoryboard_iPhone.storyboard */,
 				B331651C16DCD515000F67BA /* MainStoryboard_iPad.storyboard */,
-				B331651F16DCD515000F67BA /* ViewController.h */,
-				B331652016DCD515000F67BA /* ViewController.m */,
 				B331650816DCD514000F67BA /* Supporting Files */,
 			);
 			path = OpenUDIDViewer;
@@ -179,7 +179,7 @@
 			files = (
 				B331650E16DCD514000F67BA /* main.m in Sources */,
 				B331651216DCD515000F67BA /* AppDelegate.m in Sources */,
-				B331652116DCD515000F67BA /* ViewController.m in Sources */,
+				B331652916DCD628000F67BA /* PasteboardTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
