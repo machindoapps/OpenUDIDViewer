@@ -7,6 +7,20 @@
 //
 
 #import "PasteboardTableViewController.h"
+#import <UIKit/UIPasteboard.h>
+
+static NSString * const kOpenUDIDDescription = @"OpenUDID_with_iOS6_Support";
+static NSString * const kOpenUDIDKey = @"OpenUDID";
+static NSString * const kOpenUDIDSlotKey = @"OpenUDID_slot";
+static NSString * const kOpenUDIDAppUIDKey = @"OpenUDID_appUID";
+static NSString * const kOpenUDIDBundleIDKey = @"OpenUDID_bundleid";
+static NSString * const kOpenUDIDTSKey = @"OpenUDID_createdTS";
+static NSString * const kOpenUDIDOOTSKey = @"OpenUDID_optOutTS";
+static NSString * const kOpenUDIDDomain = @"org.OpenUDID";
+static NSString * const kOpenUDIDSlotPBPrefix = @"org.OpenUDID.slot.";
+static int const kOpenUDIDRedundancySlots = 100;
+
+#define OpenUDIDLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 
 @interface PasteboardTableViewController ()
 
@@ -26,84 +40,56 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return kOpenUDIDRedundancySlots;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"OpenUDIDCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    // Configure the cell...
-    
+    // Get the pastboard dict for each item
+	NSString* slotPBid = [NSString stringWithFormat:@"%@%d",kOpenUDIDSlotPBPrefix,[indexPath row]];
+	UIPasteboard* slotPB = [UIPasteboard pasteboardWithName:slotPBid create:NO];
+	NSDictionary* dict = [self getDictFromPasteboard:slotPB];
+	
+	NSString *oudid = [dict objectForKey:kOpenUDIDKey];
+	NSString *appUID = [dict objectForKey:kOpenUDIDAppUIDKey];
+	NSDate *timeStamp = [dict objectForKey:kOpenUDIDTSKey];
+	NSDate *optOutTimeStamp = [dict objectForKey:kOpenUDIDOOTSKey];
+	NSString *bundleID = [dict objectForKey:kOpenUDIDBundleIDKey];
+
+	UILabel *slotPBidLabel = (UILabel *)[cell viewWithTag:1];
+	slotPBidLabel.text = slotPBid;
+	UILabel *oudidLabel = (UILabel *)[cell viewWithTag:2];
+	oudidLabel.text = oudid;
+	UILabel *appUIDLabel = (UILabel *)[cell viewWithTag:3];
+	appUIDLabel.text = appUID;
+	UILabel *timeStampLabel = (UILabel *)[cell viewWithTag:4];
+	timeStampLabel.text = [timeStamp description];
+	UILabel *optOutTSLabel = (UILabel *)[cell viewWithTag:5];
+	optOutTSLabel.text = [optOutTimeStamp description];
+	UILabel *bundleLabel = (UILabel *)[cell viewWithTag:6];
+	bundleLabel.text = bundleID;
+ 
     return cell;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
@@ -117,5 +103,41 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
 }
+
+#pragma mark - OpenUDID helper methods
+
+// Output contents of OpenUDID Pasteboards to console
+-(void)printOpenUDIDPasteboards {
+	for (int n=0; n<kOpenUDIDRedundancySlots; n++) {
+        NSString* slotPBid = [NSString stringWithFormat:@"%@%d",kOpenUDIDSlotPBPrefix,n];
+        UIPasteboard* slotPB = [UIPasteboard pasteboardWithName:slotPBid create:NO];
+        OpenUDIDLog(@"SlotPB name = %@",slotPBid);
+		
+		NSDictionary* dict = [self getDictFromPasteboard:slotPB];
+		NSString* oudid = [dict objectForKey:kOpenUDIDKey];
+		OpenUDIDLog(@"SlotPB dict = %@",dict);
+		OpenUDIDLog(@"oudid = %@",oudid);
+		oudid = nil;
+		dict = nil;
+    }
+}
+
+// Retrieve an NSDictionary from a pasteboard of a given type
+- (NSMutableDictionary*) getDictFromPasteboard:(id)pboard {
+    id item = [pboard dataForPasteboardType:kOpenUDIDDomain];
+	
+    if (item) {
+        @try{
+            item = [NSKeyedUnarchiver unarchiveObjectWithData:item];
+        } @catch(NSException* e) {
+            OpenUDIDLog(@"Unable to unarchive item %@ on pasteboard!", [pboard name]);
+            item = nil;
+        }
+    }
+    
+    // return an instance of a MutableDictionary
+    return [NSMutableDictionary dictionaryWithDictionary:(item == nil || [item isKindOfClass:[NSDictionary class]]) ? item : nil];
+}
+
 
 @end
